@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Shorty – URL Shortener</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .container {
+      background: rgba(255, 255, 255, 0.95);
+      padding: 32px 36px;
+      border-radius: 14px;
+      width: 100%;
+      max-width: 420px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
+      text-align: center;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+      font-size: 1.7rem;
+      color: #111827;
+    }
+
+    input {
+      width: 100%;
+      padding: 13px;
+      border-radius: 10px;
+      border: 1px solid #d1d5db;
+      font-size: 1rem;
+      margin-bottom: 16px;
+      outline: none;
+    }
+
+    input:focus {
+      border-color: #2563eb;
+      box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+    }
+
+    button {
+      width: 100%;
+      padding: 13px;
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      color: white;
+      font-size: 1rem;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 18px rgba(37, 99, 235, 0.4);
+    }
+
+    #result {
+      margin-top: 18px;
+      font-size: 0.95rem;
+      word-break: break-all;
+    }
+
+    #result a {
+      color: #1d4ed8;
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    #result a:hover {
+      text-decoration: underline;
+    }
+
+    footer {
+      margin-top: 22px;
+      font-size: 0.75rem;
+      color: #6b7280;
+    }
+  </style>
+
+</head>
+
+<body>
+  <div class="container">
+    <h1>Shorty URL Shortener</h1>
+
+    <input type="text" id="url" placeholder="Enter a long URL (https://...)" />
+
+    <button onclick="shorten()">Shorten URL</button>
+
+    <div id="result"></div>
+
+    <footer>
+      Built with Node.js · Express · MongoDB
+    </footer>
+  </div>
+
+  <script>
+    async function shorten() {
+      const longUrl = document.getElementById("url").value.trim();
+      const result = document.getElementById("result");
+
+      if (!longUrl) {
+        result.innerHTML = "<span style='color:red'>Please enter a URL</span>";
+        return;
+      }
+
+      try {
+        const res = await fetch("/", { // matches router.post("/", ...)
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ url: longUrl }),
+});
+
+
+        const data = await res.json();
+
+       result.innerHTML = `
+  Short URL:
+  <a href="/${data.shortId}" target="_blank">
+    ${window.location.origin}/${data.shortId}
+  </a>
+`;
+
+
+      } catch (err) {
+        result.innerHTML =
+          "<span style='color:red'>Something went wrong</span>";
+      }
+    }
+  </script>
+</body>
+
+</html>

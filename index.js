@@ -20,8 +20,10 @@ app.get("/", (req, res) => {
 app.use("/",urlRoute);
 
 
-connectDB('mongodb://localhost:27017/shorty_dev')
-.then(()=>console.log("DB is connected"))
-.catch((err) => console.log(err))
-app.listen(PORT,()=>
-   console.log(`SERVER STARTED AT port : ${PORT}`));
+connectDB(process.env.MONGO_URI)
+  .then(() => console.log("DB is connected"))
+  .catch((err) => console.log(err));
+
+app.listen(PORT, () =>
+  console.log(`SERVER STARTED AT port : ${PORT}`)
+);

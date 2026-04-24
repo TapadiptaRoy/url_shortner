@@ -19,7 +19,7 @@ if (!longUrl.startsWith("http://") && !longUrl.startsWith("https://")) {
 } 
 
 
-const existingUrl = await URLModel.findOne({ longUrl });
+const existingUrl = await URLModel.findOneAndUpdate({ longUrl });
 
   if (existingUrl) {
     return res.json({ shortId: existingUrl.shortID });

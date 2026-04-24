@@ -1,3 +1,5 @@
+const mongoose=require("mongoose");
+require("dotenv").config();
 const express=require('express');
 const URL=require("./Models/url")
 const path=require('path');
@@ -6,7 +8,8 @@ const cors=require("cors");
 const app=express();
 const PORT=process.env.PORT || 5000;
 
-const {connectDB}=require("./connect")
+
+const connectDB=require("./connect")
 
 app.use(cors());
 app.use(express.json());
@@ -20,7 +23,7 @@ app.get("/", (req, res) => {
 app.use("/",urlRoute);
 
 
-connectDB(process.env.MONGO_URI)
+connectDB()
   .then(() => console.log("DB is connected"))
   .catch((err) => console.log(err));
 
